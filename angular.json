@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "ProtoGodOfMoney"
+  "defaultProject": "ProtoGodOfMoney",
+  "cli": {
+    "analytics": false
+  }
 }
