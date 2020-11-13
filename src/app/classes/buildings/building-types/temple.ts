@@ -1,6 +1,5 @@
 import { Building } from '../building';
 
-
 export class Temple extends Building {
     constructor() {
         super();
