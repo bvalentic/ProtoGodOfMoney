@@ -2,13 +2,48 @@
 
 <table>
     <thead>
-        <th>Header 1</th>
-        <th>Header 2</th>
+        <th>Money</th>
     </thead>
     <tbody>
         <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
+            <td>${{money.toFixed(2)}}</td>
+            <td>+ ${{moneyIncrement.toFixed(2)}}/turn</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<table>
+    <thead>
+        <th>Buildings</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Temples</td>
+            <td>{{buildings.temples.length}}</td>
+            <button [disabled]="costs.temple > money" (click)="buyTemple()">Buy Temple</button>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+<table>
+    <thead>
+        <th>People</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Priests</td>
+            <td>{{people.priests.length}}</td>
+        </tr>
+        <tr>
+            <td>All</td>
+            <td>{{people.all.length}}</td>
+            <button [disabled]="costs.priest > money" (click)="convertToPriest()">Convert to Priest</button>
         </tr>
     </tbody>
 </table>
