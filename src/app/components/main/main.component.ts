@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Temple } from 'src/app/classes/buildings/building-types/temple';
-import { Employee } from 'src/app/classes/people/employees/employee';
+import { Job } from 'src/app/classes/people/employees/job';
 import { Person } from 'src/app/classes/people/person';
 import { Priest } from 'src/app/classes/people/employees/employee-types/priest';
 import { Building } from 'src/app/classes/buildings/building';
+import { Names } from 'src/app/classes/people/names';
+import { Randomizer as rng } from 'src/app/utilities/randomizer';
 
 @Component({
   selector: 'app-main',
@@ -21,13 +23,14 @@ export class MainComponent implements OnInit {
   }
 
   buildings: {
+    all: Building[],
     temples: Temple[],
   };
 
   people: {
     all: Person[],
-    employees: Employee[],
-    priests: Priest[],
+    employees: Person[],
+    priests: Person[],
   };
 
   constructor() {
@@ -44,6 +47,7 @@ export class MainComponent implements OnInit {
     if (this.money >= newTemple.cost) {
       this.money -= newTemple.cost;
       this.buildings.temples.push(newTemple);
+      this.buildings.all.push(newTemple);
     }
   }
 
@@ -57,38 +61,72 @@ export class MainComponent implements OnInit {
       let newPriest = new Priest();
       if (this.money >= newPriest.cost) {
         this.money -= newPriest.cost;
-        let recruit = this.people.all.pop();
-        newPriest.name = recruit.name;
-        this.people.employees.push(newPriest);
-        this.people.priests.push(newPriest);
+        let recruit = this.chooseRecruit(newPriest.jobTitle);
+        recruit.occupation = newPriest;
+        this.people.employees.push(recruit);
+        this.people.priests.push(recruit);
+        console.log(recruit.name + " is now a priest!");
       }      
     }
   }
 
-  getBuildingIncreaseRate(buildings: Array<Building>) {
-    return (buildings.length) ? buildings.length * buildings[0].increaseRate : 0;
+  chooseRecruit(potentialOccupation: string) {
+    let choosing = true;
+    let recruit: Person;
+    while (choosing) {
+      recruit = rng.draw(this.people.all);
+      if (recruit.occupation) {
+        choosing = recruit.occupation.jobTitle === potentialOccupation
+      }
+      else choosing = false;
+    }
+    return recruit;
   }
 
-  getEmployeeIncreaseRate(employees: Array<Employee>) {
-    return (employees.length) ? employees.length * employees[0].increaseRate : 0;
+  getBuildingIncreaseRate(buildings: Array<Building>) {
+    let buildingIncreaseRate = 0;
+    this.buildings.all.forEach(building => {
+      buildingIncreaseRate += building.increaseRate;
+    })
+    
+    return buildingIncreaseRate;
+  }
+
+  getEmployeeIncreaseRate() {
+    let employeeIncreaseRate = 0;
+    this.people.employees.forEach(employee => {
+      employeeIncreaseRate += employee.occupation.increaseRate;
+    });
+
+    return employeeIncreaseRate;
   }
 
   setup() {
     this.buildings = {
-      temples: new Array<Temple>(),
+      all: new Array<Building>(),
+      temples: new Array<Building>(),
     };
     this.people = {
       all: new Array<Person>(),
-      employees: new Array<Employee>(),
-      priests: new Array<Priest>(),
+      employees: new Array<Person>(),
+      priests: new Array<Person>(),
     };
-    this.people.all.push(new Person());
+    this.populateWorld();
+  }
+
+  populateWorld() {
+    let numOfFirstNames = Names.maleFirstNameList.length;
+    let numOfLastNames = Names.maleLastNameList.length;
+    for (let i = 0; i < (numOfFirstNames * numOfLastNames); i++) {
+      this.people.all.push(new Person());
+    }
+    console.log(this.people.all);
   }
 
   setIncreaseRate() {
     this.moneyIncrement = 
       this.getBuildingIncreaseRate(this.buildings.temples) + 
-      this.getEmployeeIncreaseRate(this.people.priests);
+      this.getEmployeeIncreaseRate();
   }
 
   increase() {

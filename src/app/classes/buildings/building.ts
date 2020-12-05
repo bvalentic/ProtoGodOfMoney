@@ -1,4 +1,4 @@
-import { Employee } from '../people/employees/employee';
+import { Job } from '../people/employees/job';
 
 export class Building {
     cost: number;
@@ -6,5 +6,5 @@ export class Building {
     className: string;
     name: string;
     increaseRate: number;
-    employees: Employee[];
+    employees: Job[];
 }
