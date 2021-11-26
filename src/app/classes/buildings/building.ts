@@ -1,7 +1,7 @@
 import { Job } from '../people/employees/job';
 
 export class Building {
-    cost: number;
+    baseCost: number;
     resellValue: number;
     className: string;
     name: string;

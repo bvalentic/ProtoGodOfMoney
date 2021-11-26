@@ -6,8 +6,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>${{money.toFixed(2)}}</td>
-            <td>+ ${{moneyIncrement.toFixed(2)}}/turn</td>
+            <td>${{moneyBalance.toFixed(2)}}</td>
+            <td>+ ${{moneyPerSecond.toFixed(2)}}/second</td>
         </tr>
     </tbody>
 </table>
@@ -23,14 +23,17 @@
         <tr>
             <td>Temples</td>
             <td>{{buildings.temples.length}}</td>
-            <button [disabled]="costs.temple > money" (click)="buyTemple()">Buy Temple</button>
+            <button [disabled]="buildings.temples.marginalCost() > moneyBalance" (click)="buyTemple()">Buy Temple</button>
+            <td>Cost: {{buildings.temples.marginalCost().toFixed(2)}}</td>
+            <button [disabled]="buildings.temples.length <= 0" (click)="sellTemple()">Sell Temple</button>
+            <td>Resell Value: {{buildings.temples.resellValue().toFixed(2)}}</td>
         </tr>
     </tbody>
 </table>
 
 <br>
 
-<table>
+<!-- <table>
     <thead>
         <th>People</th>
         <th></th>
@@ -46,4 +49,4 @@
             <button [disabled]="costs.priest > money" (click)="convertToPriest()">Convert to Priest</button>
         </tr>
     </tbody>
-</table>
+</table> -->
