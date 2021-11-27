@@ -1,5 +1,3 @@
-import { Building } from "./building";
-import { Temple } from "./building-types/temple"
 
 
 // A list of variables for each building in the game.
@@ -8,6 +6,11 @@ export const BuildingEnums = {
         name: "Temple",
         baseCost: 1,
         increaseRate: 0.2
+    },
+    BANK_ANCIENT: {
+        name: "Ancient Bank",
+        baseCost: 50,
+        increaseRate: 1
     }
 }
 
@@ -32,16 +35,18 @@ export class BuildingList extends Array {
 
 export class TempleList extends BuildingList {
     baseCost = BuildingEnums.TEMPLE.baseCost;
-    // marginalCost() {
-    //     return (BuildingEnums.TEMPLE.baseCost * Math.pow(1.15, this.length));
-    // }
+}
+
+export class BankAncientList extends BuildingList {
+    baseCost = BuildingEnums.BANK_ANCIENT.baseCost;
 }
 
 export class BuildingsOwned {
     temples: TempleList;
-    
+    banksAncient: BankAncientList;
 
     constructor() {
         this.temples = new TempleList();
+        this.banksAncient = new BankAncientList();
     }
 }

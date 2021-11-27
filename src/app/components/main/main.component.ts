@@ -7,6 +7,7 @@ import { Building } from 'src/app/classes/buildings/building';
 import { Names } from 'src/app/classes/people/names';
 import { Randomizer as rng } from 'src/app/utilities/randomizer';
 import { BuildingEnums, BuildingList, BuildingsOwned } from 'src/app/classes/buildings/building-list';
+import { BankAncient } from 'src/app/classes/buildings/building-types/bank-ancient';
 
 @Component({
   selector: 'app-main',
@@ -19,8 +20,12 @@ export class MainComponent implements OnInit {
   moneyBalance: number = 10.0;
   // How much money is gained per second.
   moneyPerSecond: number = 0;
+  // How much money has been earned for the entire game.
+  moneyAllTime: number = 0;
 
   buildings: BuildingsOwned;
+
+  coinClickValue: number;
 
   // costs = {
   //   temple: 10,
@@ -51,14 +56,29 @@ export class MainComponent implements OnInit {
     return Math.round(number * 100) / 100
   }
 
+  coinClick() {
+    console.log("Click!")
+    this.moneyBalance += this.coinClickValue;
+    this.moneyAllTime += this.coinClickValue;
+  }
+
   buyTemple() {
     console.log("Buying temple #" + (this.buildings.temples.length + 1))
     let newTemple = new Temple();
-    let cost = this.buildings.temples.marginalCost();
+    let cost = this.round(this.buildings.temples.marginalCost());
     if (this.moneyBalance >= cost) {
       this.moneyBalance = this.round(this.moneyBalance - cost);
       this.buildings.temples.push(newTemple);
-      console.log(this.moneyBalance, cost)
+    }
+  }
+
+  buyBankAncient() {
+    console.log("Buying ancient bank #" + (this.buildings.banksAncient.length + 1))
+    let newBuilding = new BankAncient();
+    let cost = this.buildings.banksAncient.marginalCost();
+    if (this.moneyBalance >= cost) {
+      this.moneyBalance = this.round(this.moneyBalance - cost);
+      this.buildings.banksAncient.push(newBuilding);
     }
   }
 
@@ -125,6 +145,7 @@ export class MainComponent implements OnInit {
     // };
     // this.populateWorld();
     this.buildings = new BuildingsOwned();
+    this.coinClickValue = 0.01;
   }
 
   // populateWorld() {
@@ -154,7 +175,8 @@ export class MainComponent implements OnInit {
   }
 
   increase() {
-    this.moneyBalance += this.moneyPerSecond;
+    this.moneyBalance += this.round(this.moneyPerSecond);
+    this.moneyAllTime += this.round(this.moneyPerSecond);
   }
 
 }

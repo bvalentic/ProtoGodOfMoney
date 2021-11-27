@@ -1,12 +1,12 @@
 import { Building } from '../building';
+import { BuildingEnums } from '../building-list';
 
 export class Temple extends Building {
     constructor() {
         super();
-        this.baseCost = 10;
-        this.className = "temple";
+        this.baseCost = BuildingEnums.TEMPLE.baseCost;
+        this.className = BuildingEnums.TEMPLE.name;
         this.name = "Temple of Dosh";
-        this.resellValue = 2;
-        this.increaseRate = 0.1;
+        this.increaseRate = BuildingEnums.TEMPLE.increaseRate;
     }
 }

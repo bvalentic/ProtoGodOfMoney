@@ -1,37 +1,75 @@
-<p>God of Money</p>
+<div class="column--wrapper">
+    <div id="column-one" class="column column-one">
+        <div>
+            <button class="big-coin" (click)="coinClick()">
+                Coin
+            </button>
+        </div>
+        <table>
+            <thead>
+                <th>Money</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>${{moneyBalance.toFixed(2)}}</td>
+                    <td>+ ${{moneyPerSecond.toFixed(2)}}/second</td>
+                </tr>
+                <tr>
+                    <td>Money earned all time:</td>
+                    <td>${{moneyAllTime.toFixed(2)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="column-two" class="column column-two">
+        <p>God of Money</p>
+    </div>
 
-<table>
-    <thead>
-        <th>Money</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>${{moneyBalance.toFixed(2)}}</td>
-            <td>+ ${{moneyPerSecond.toFixed(2)}}/second</td>
-        </tr>
-    </tbody>
-</table>
-
-<br>
-
-<table>
-    <thead>
-        <th>Buildings</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Temples</td>
-            <td>{{buildings.temples.length}}</td>
-            <button [disabled]="buildings.temples.marginalCost() > moneyBalance" (click)="buyTemple()">Buy Temple</button>
-            <td>Cost: {{buildings.temples.marginalCost().toFixed(2)}}</td>
-            <button [disabled]="buildings.temples.length <= 0" (click)="sellTemple()">Sell Temple</button>
-            <td>Resell Value: {{buildings.temples.resellValue().toFixed(2)}}</td>
-        </tr>
-    </tbody>
-</table>
-
-<br>
+    <div id="column-three" class="column column-three">
+        <table>
+            <thead>
+                <th>Buildings</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Temples</td>
+                    <td>{{buildings.temples.length}}</td>
+                    <button [disabled]="buildings.temples.marginalCost() > moneyBalance" (click)="buyTemple()">Buy
+                        Temple</button>
+                    <td>Cost: ${{buildings.temples.marginalCost().toFixed(2)}}</td>
+                    <button [disabled]="buildings.temples.length <= 0" (click)="sellTemple()">Sell Temple</button>
+                    <td>Resell Value: ${{buildings.temples.resellValue().toFixed(2)}}</td>
+                </tr>
+                <ng-container *ngIf="moneyAllTime < buildings.banksAncient.baseCost">
+                    <tr>
+                        <td>???</td>
+                        <td></td>
+                        <button [disabled]="buildings.banksAncient.marginalCost() > moneyBalance">Buy</button>
+                        <td>Cost: ${{buildings.banksAncient.baseCost.toFixed(2)}}</td>
+                        <button [disabled]="buildings.banksAncient.length <= 0" (click)="sellTemple()">Sell</button>
+                        <td>Resell Value: ???</td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="moneyAllTime >= buildings.banksAncient.baseCost">
+                    <tr>
+                        <td>Ancient Banks</td>
+                        <td>{{buildings.banksAncient.length}}</td>
+                        <button [disabled]="buildings.banksAncient.marginalCost() > moneyBalance" (click)="buyBankAncient()">
+                            Buy Ancient Bank
+                        </button>
+                        <td>Cost: ${{buildings.banksAncient.marginalCost().toFixed(2)}}</td>
+                        <button [disabled]="buildings.banksAncient.length <= 0" (click)="sellBankAncient()">
+                            Sell Ancient Bank
+                        </button>
+                        <td>Resell Value: ${{buildings.banksAncient.resellValue().toFixed(2)}}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- <table>
     <thead>
